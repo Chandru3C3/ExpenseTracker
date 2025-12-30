@@ -1,0 +1,88 @@
+<div class="reports-container">
+      <h2>Financial Reports & Analytics</h2>
+      
+      <div class="date-filter">
+        <p-card>
+          <div class="filter-row">
+            <div class="field">
+              <label>Start Date</label>
+              <input 
+                type="date" 
+                [(ngModel)]="startDate"
+                class="date-input">
+            </div>
+            <div class="field">
+              <label>End Date</label>
+              <input 
+                type="date" 
+                [(ngModel)]="endDate"
+                class="date-input">
+            </div>
+            <div class="field">
+              <p-button 
+                label="Generate Report" 
+                icon="pi pi-chart-bar"
+                (onClick)="generateReport()">
+              </p-button>
+            </div>
+          </div>
+        </p-card>
+      </div>
+      
+      <div class="summary-cards" *ngIf="summary">
+        <p-card>
+          <div class="summary-stat">
+            <h3>Total Expenses</h3>
+            <p class="stat-value">{{ summary.totalExpenses | currency:'INR' }}</p>
+          </div>
+        </p-card>
+        
+        <p-card>
+          <div class="summary-stat">
+            <h3>Total Transactions</h3>
+            <p class="stat-value">{{ summary.transactionCount }}</p>
+          </div>
+        </p-card>
+        
+        <p-card>
+          <div class="summary-stat">
+            <h3>Average Expense</h3>
+            <p class="stat-value">{{ summary.averageExpense | currency:'INR' }}</p>
+          </div>
+        </p-card>
+      </div>
+      
+      <div class="report-content" *ngIf="summary">
+        <p-card header="Category Breakdown">
+          <p-table [value]="categoryData" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Percentage</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>{{ item.category }}</td>
+                <td>{{ item.amount | currency:'INR' }}</td>
+                <td>{{ item.percentage | number:'1.1-1' }}%</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-card>
+        
+        <p-card header="Expense Distribution">
+          <p-chart type="pie" [data]="categoryChartData" [options]="chartOptions"></p-chart>
+        </p-card>
+      </div>
+      
+      <div class="export-section" *ngIf="summary">
+        <p-button 
+          label="Export to CSV" 
+          icon="pi pi-download"
+          (onClick)="exportToCSV()"
+          styleClass="p-button-success">
+        </p-button>
+      </div>
+    </div>

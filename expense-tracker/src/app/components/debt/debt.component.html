@@ -1,0 +1,212 @@
+<div class="card">
+      <h2>Debt Management</h2>
+      
+      <p-toast></p-toast>
+      <p-confirmDialog></p-confirmDialog>
+      
+      <div class="mb-3">
+        <p-button 
+          label="Add Debt" 
+          icon="pi pi-plus" 
+          (onClick)="showDialogToAdd()">
+        </p-button>
+      </div>
+      
+      <p-table 
+        [value]="debts" 
+        [tableStyle]="{'min-width': '60rem'}"
+        [paginator]="true"
+        [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Debt Name</th>
+            <th>Creditor</th>
+            <th>Total Amount</th>
+            <th>Paid</th>
+            <th>Remaining</th>
+            <th>Progress</th>
+            <th>Interest Rate</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-debt>
+          <tr>
+            <td>{{ debt.debtName }}</td>
+            <td>{{ debt.creditor }}</td>
+            <td>{{ debt.totalAmount | currency:'INR' }}</td>
+            <td>{{ debt.paidAmount || 0 | currency:'INR' }}</td>
+            <td>{{ debt.remainingAmount || debt.totalAmount | currency:'INR' }}</td>
+            <td>
+              <p-progressBar 
+                [value]="getProgressValue(debt)"
+                [showValue]="false"
+                [style]="{'height': '10px'}">
+              </p-progressBar>
+              <small>{{ getProgressValue(debt) | number:'1.0-0' }}%</small>
+            </td>
+            <td>{{ debt.interestRate }}%</td>
+            <td>{{ debt.dueDate | date }}</td>
+            <td>
+              <p-tag 
+                [value]="debt.priority"
+                [severity]="getPrioritySeverity(debt.priority)">
+              </p-tag>
+            </td>
+            <td>
+              <p-tag 
+                [value]="debt.status || 'PENDING'"
+                [severity]="getStatusSeverity(debt.status || 'PENDING')">
+              </p-tag>
+            </td>
+            <td>
+              <p-button 
+                icon="pi pi-dollar" 
+                styleClass="p-button-rounded p-button-info p-button-sm mr-2"
+                (onClick)="showPaymentDialog(debt)"
+                pTooltip="Make Payment">
+              </p-button>
+              <p-button 
+                icon="pi pi-pencil" 
+                styleClass="p-button-rounded p-button-success p-button-sm mr-2"
+                (onClick)="editDebt(debt)">
+              </p-button>
+              <p-button 
+                icon="pi pi-trash" 
+                styleClass="p-button-rounded p-button-danger p-button-sm"
+                (onClick)="deleteDebt(debt)">
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog 
+      [(visible)]="displayDialog" 
+      [header]="isEdit ? 'Edit Debt' : 'Add Debt'"
+      [modal]="true"
+      [style]="{width: '450px'}">
+      
+      <div class="p-fluid">
+        <div class="field">
+          <label for="debtName">Debt Name</label>
+          <input 
+            type="text" 
+            pInputText 
+            id="debtName"
+            [(ngModel)]="debt.debtName"
+            required>
+        </div>
+        
+        <div class="field">
+          <label for="creditor">Creditor</label>
+          <input 
+            type="text" 
+            pInputText 
+            id="creditor"
+            [(ngModel)]="debt.creditor"
+            required>
+        </div>
+        
+        <div class="field">
+          <label for="totalAmount">Total Amount</label>
+          <p-inputNumber 
+            id="totalAmount"
+            [(ngModel)]="debt.totalAmount"
+            mode="currency"
+            currency="INR"
+            locale="en-IN">
+          </p-inputNumber>
+        </div>
+        
+        <div class="field">
+          <label for="interestRate">Interest Rate (%)</label>
+          <p-inputNumber 
+            id="interestRate"
+            [(ngModel)]="debt.interestRate"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            suffix="%">
+          </p-inputNumber>
+        </div>
+        
+        <div class="field">
+          <label for="dueDate">Due Date</label>
+          <input 
+            type="date" 
+            pInputText 
+            id="dueDate"
+            [(ngModel)]="debt.dueDate">
+        </div>
+        
+        <div class="field">
+          <label for="priority">Priority</label>
+          <p-dropdown 
+            id="priority"
+            [(ngModel)]="debt.priority"
+            [options]="priorities"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select priority">
+          </p-dropdown>
+        </div>
+      </div>
+      
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="displayDialog = false">
+        </p-button>
+        <p-button 
+          label="Save" 
+          icon="pi pi-check"
+          (onClick)="saveDebt()">
+        </p-button>
+      </ng-template>
+    </p-dialog>
+
+    <p-dialog 
+      [(visible)]="displayPaymentDialog" 
+      header="Make Payment"
+      [modal]="true"
+      [style]="{width: '400px'}">
+      
+      <div class="p-fluid">
+        <div class="field">
+          <label>Remaining Amount</label>
+          <p class="text-lg font-bold">
+            {{ selectedDebt?.remainingAmount || selectedDebt?.totalAmount | currency:'INR' }}
+          </p>
+        </div>
+        
+        <div class="field">
+          <label for="paymentAmount">Payment Amount</label>
+          <p-inputNumber 
+            id="paymentAmount"
+            [(ngModel)]="paymentAmount"
+            mode="currency"
+            currency="INR"
+            locale="en-IN">
+          </p-inputNumber>
+        </div>
+      </div>
+      
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="displayPaymentDialog = false">
+        </p-button>
+        <p-button 
+          label="Pay" 
+          icon="pi pi-check"
+          (onClick)="makePayment()">
+        </p-button>
+      </ng-template>
+    </p-dialog>

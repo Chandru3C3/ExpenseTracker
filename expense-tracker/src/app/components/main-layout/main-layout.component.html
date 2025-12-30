@@ -1,0 +1,47 @@
+<div class="app-wrapper">
+      <div class="app-header">
+        <div class="header-content">
+          <h1 class="app-title">
+            <i class="pi pi-wallet"></i> Expense Tracker Pro
+          </h1>
+          
+          <div class="user-section">
+            <span class="username">{{ currentUser?.username }}</span>
+            <p-button 
+              icon="pi pi-sign-out" 
+              label="Logout"
+              styleClass="p-button-text"
+              (onClick)="logout()">
+            </p-button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container">
+        <p-tabView>
+          <p-tabPanel header="Dashboard" leftIcon="pi pi-home">
+            <app-dashboard></app-dashboard>
+          </p-tabPanel>
+          
+          <p-tabPanel header="Expenses" leftIcon="pi pi-money-bill">
+            <app-expense></app-expense>
+          </p-tabPanel>
+          
+          <p-tabPanel header="EMI Schedule" leftIcon="pi pi-calendar">
+            <app-emi></app-emi>
+          </p-tabPanel>
+          
+          <p-tabPanel header="Budgets" leftIcon="pi pi-chart-line">
+            <app-budget></app-budget>
+          </p-tabPanel>
+          
+          <p-tabPanel header="Debts" leftIcon="pi pi-credit-card">
+            <app-debt></app-debt>
+          </p-tabPanel>
+          
+          <p-tabPanel header="Reports" leftIcon="pi pi-chart-bar">
+            <app-reports></app-reports>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>

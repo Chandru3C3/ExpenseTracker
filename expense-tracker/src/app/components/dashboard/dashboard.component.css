@@ -1,0 +1,78 @@
+.dashboard {
+      padding: 1rem;
+    }
+    
+    .dashboard h2 {
+      margin-bottom: 1.5rem;
+      color: #495057;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .stat-icon {
+      font-size: 3rem;
+      padding: 0.75rem;
+      border-radius: 12px;
+    }
+    
+    .stat-icon.expense {
+      color: #ef4444;
+      background-color: #fee2e2;
+    }
+    
+    .stat-icon.emi {
+      color: #3b82f6;
+      background-color: #dbeafe;
+    }
+    
+    .stat-icon.budget {
+      color: #10b981;
+      background-color: #d1fae5;
+    }
+    
+    .stat-icon.debt {
+      color: #f59e0b;
+      background-color: #fef3c7;
+    }
+    
+    .stat-content h3 {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0.25rem 0;
+    }
+    
+    .stat-content small {
+      color: #9ca3af;
+    }
+    
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .stats-grid,
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }

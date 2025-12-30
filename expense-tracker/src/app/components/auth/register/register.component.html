@@ -1,0 +1,77 @@
+<div class="register-container">
+      <p-toast></p-toast>
+      
+      <p-card class="register-card">
+        <div class="register-header">
+          <i class="pi pi-user-plus"></i>
+          <h2>Create Account</h2>
+          <p>Start tracking your expenses today</p>
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          <div class="p-fluid">
+            <div class="field">
+              <label for="fullName">Full Name</label>
+              <input 
+                type="text" 
+                pInputText 
+                id="fullName"
+                [(ngModel)]="userData.fullName"
+                name="fullName"
+                [disabled]="loading">
+            </div>
+            
+            <div class="field">
+              <label for="username">Username</label>
+              <input 
+                type="text" 
+                pInputText 
+                id="username"
+                [(ngModel)]="userData.username"
+                name="username"
+                required
+                [disabled]="loading">
+            </div>
+            
+            <div class="field">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                pInputText 
+                id="email"
+                [(ngModel)]="userData.email"
+                name="email"
+                required
+                [disabled]="loading">
+            </div>
+            
+            <div class="field">
+              <label for="password">Password</label>
+              <p-password 
+                id="password"
+                [(ngModel)]="userData.password"
+                name="password"
+                [toggleMask]="true"
+                [disabled]="loading"
+                required
+                [strongRegex]="'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})'">
+              </p-password>
+            </div>
+            
+            <p-button 
+              label="Create Account" 
+              icon="pi pi-user-plus"
+              [loading]="loading"
+              [disabled]="!registerForm.valid"
+              type="submit"
+              styleClass="w-full">
+            </p-button>
+            
+            <div class="login-link">
+              <span>Already have an account? </span>
+              <a (click)="goToLogin()">Sign in here</a>
+            </div>
+          </div>
+        </form>
+      </p-card>
+    </div>

@@ -1,0 +1,67 @@
+<div class="dashboard">
+      <h2>Dashboard Overview</h2>
+      
+      <div class="stats-grid">
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-money-bill stat-icon expense"></i>
+            <div class="stat-content">
+              <h3>Total Expenses</h3>
+              <p class="stat-value">{{ totalExpenses | currency:'INR':'symbol':'1.0-0' }}</p>
+              <small>This month</small>
+            </div>
+          </div>
+        </p-card>
+        
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-calendar stat-icon emi"></i>
+            <div class="stat-content">
+              <h3>Active EMIs</h3>
+              <p class="stat-value">{{ activeEMIs }}</p>
+              <small>{{ totalEMIAmount | currency:'INR':'symbol':'1.0-0' }} / month</small>
+            </div>
+          </div>
+        </p-card>
+        
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-chart-line stat-icon budget"></i>
+            <div class="stat-content">
+              <h3>Budgets</h3>
+              <p class="stat-value">{{ activeBudgets }}</p>
+              <small>{{ budgetUtilization | number:'1.0-0' }}% utilized</small>
+            </div>
+          </div>
+        </p-card>
+        
+        <p-card>
+          <div class="stat-card">
+            <i class="pi pi-credit-card stat-icon debt"></i>
+            <div class="stat-content">
+              <h3>Total Debts</h3>
+              <p class="stat-value">{{ totalDebts | currency:'INR':'symbol':'1.0-0' }}</p>
+              <small>{{ pendingDebts }} pending</small>
+            </div>
+          </div>
+        </p-card>
+      </div>
+      
+      <div class="charts-grid">
+        <p-card header="Expenses by Category">
+          <p-chart type="doughnut" [data]="categoryChartData" [options]="chartOptions"></p-chart>
+        </p-card>
+        
+        <p-card header="Monthly Expenses Trend">
+          <p-chart type="line" [data]="monthlyTrendData" [options]="lineChartOptions"></p-chart>
+        </p-card>
+        
+        <p-card header="Budget vs Actual">
+          <p-chart type="bar" [data]="budgetComparisonData" [options]="barChartOptions"></p-chart>
+        </p-card>
+        
+        <p-card header="Debt Distribution">
+          <p-chart type="pie" [data]="debtDistributionData" [options]="chartOptions"></p-chart>
+        </p-card>
+      </div>
+    </div>

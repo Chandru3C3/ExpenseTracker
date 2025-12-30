@@ -1,0 +1,54 @@
+<div class="login-container">
+      <p-toast></p-toast>
+      
+      <p-card class="login-card">
+        <div class="login-header">
+          <i class="pi pi-wallet"></i>
+          <h2>Expense Tracker Pro</h2>
+          <p>Sign in to your account</p>
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="p-fluid">
+            <div class="field">
+              <label for="username">Username</label>
+              <input 
+                type="text" 
+                pInputText 
+                id="username"
+                [(ngModel)]="credentials.username"
+                name="username"
+                required
+                [disabled]="loading">
+            </div>
+            
+            <div class="field">
+              <label for="password">Password</label>
+              <p-password 
+                id="password"
+                [(ngModel)]="credentials.password"
+                name="password"
+                [feedback]="false"
+                [toggleMask]="true"
+                [disabled]="loading"
+                required>
+              </p-password>
+            </div>
+            
+            <p-button 
+              label="Sign In" 
+              icon="pi pi-sign-in"
+              [loading]="loading"
+              [disabled]="!loginForm.valid"
+              type="submit"
+              styleClass="w-full">
+            </p-button>
+            
+            <div class="register-link">
+              <span>Don't have an account? </span>
+              <a (click)="goToRegister()">Register here</a>
+            </div>
+          </div>
+        </form>
+      </p-card>
+    </div>

@@ -1,0 +1,146 @@
+<div class="card">
+      <h2>Budget Management</h2>
+      
+      <p-toast></p-toast>
+      <p-confirmDialog></p-confirmDialog>
+      
+      <div class="mb-3">
+        <p-button 
+          label="Add Budget" 
+          icon="pi pi-plus" 
+          (onClick)="showDialogToAdd()">
+        </p-button>
+      </div>
+      
+      <p-table 
+        [value]="budgets" 
+        [tableStyle]="{'min-width': '60rem'}"
+        [paginator]="true"
+        [rows]="10">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Category</th>
+            <th>Budget Amount</th>
+            <th>Spent</th>
+            <th>Remaining</th>
+            <th>Progress</th>
+            <th>Period</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-budget>
+          <tr>
+            <td>{{ budget.category }}</td>
+            <td>{{ budget.budgetAmount | currency:'INR' }}</td>
+            <td>{{ budget.spentAmount || 0 | currency:'INR' }}</td>
+            <td>{{ getRemainingAmount(budget) | currency:'INR' }}</td>
+            <td>
+              <p-progressBar 
+                [value]="getProgressValue(budget)"
+                [showValue]="false"
+                [style]="{'height': '10px'}"
+                [ngClass]="getProgressClass(budget)">
+              </p-progressBar>
+              <small>{{ getProgressValue(budget) | number:'1.0-0' }}%</small>
+            </td>
+            <td>
+              <small>{{ budget.startDate | date }} to {{ budget.endDate | date }}</small>
+            </td>
+            <td>
+              <p-tag 
+                [value]="getBudgetStatus(budget)"
+                [severity]="getStatusSeverity(budget)">
+              </p-tag>
+            </td>
+            <td>
+              <p-button 
+                icon="pi pi-pencil" 
+                styleClass="p-button-rounded p-button-success p-button-sm mr-2"
+                (onClick)="editBudget(budget)">
+              </p-button>
+              <p-button 
+                icon="pi pi-trash" 
+                styleClass="p-button-rounded p-button-danger p-button-sm"
+                (onClick)="deleteBudget(budget)">
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog 
+      [(visible)]="displayDialog" 
+      [header]="isEdit ? 'Edit Budget' : 'Add Budget'"
+      [modal]="true"
+      [style]="{width: '450px'}">
+      
+      <div class="p-fluid">
+        <div class="field">
+          <label for="category">Category</label>
+          <p-dropdown 
+            id="category"
+            [(ngModel)]="budget.category"
+            [options]="categories"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select a category">
+          </p-dropdown>
+        </div>
+        
+        <div class="field">
+          <label for="budgetAmount">Budget Amount</label>
+          <p-inputNumber 
+            id="budgetAmount"
+            [(ngModel)]="budget.budgetAmount"
+            mode="currency"
+            currency="INR"
+            locale="en-IN">
+          </p-inputNumber>
+        </div>
+        
+        <div class="field">
+          <label for="startDate">Start Date</label>
+          <input 
+            type="date" 
+            pInputText 
+            id="startDate"
+            [(ngModel)]="budget.startDate">
+        </div>
+        
+        <div class="field">
+          <label for="endDate">End Date</label>
+          <input 
+            type="date" 
+            pInputText 
+            id="endDate"
+            [(ngModel)]="budget.endDate">
+        </div>
+        
+        <div class="field">
+          <label for="alertThreshold">Alert Threshold (%)</label>
+          <p-inputNumber 
+            id="alertThreshold"
+            [(ngModel)]="budget.alertThreshold"
+            [min]="0"
+            [max]="100"
+            suffix="%">
+          </p-inputNumber>
+        </div>
+      </div>
+      
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times"
+          styleClass="p-button-text"
+          (onClick)="displayDialog = false">
+        </p-button>
+        <p-button 
+          label="Save" 
+          icon="pi pi-check"
+          (onClick)="saveBudget()">
+        </p-button>
+      </ng-template>
+    </p-dialog>

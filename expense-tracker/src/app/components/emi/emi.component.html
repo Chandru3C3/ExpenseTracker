@@ -1,0 +1,166 @@
+<div class="card">
+  <h2>EMI Schedule Management</h2>
+  
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  
+  <div class="mb-3">
+    <p-button 
+      label="Add EMI" 
+      icon="pi pi-plus" 
+      (onClick)="showDialogToAdd()">
+    </p-button>
+  </div>
+  
+  <p-table 
+    [value]="emis" 
+    [tableStyle]="{'min-width': '60rem'}"
+    [paginator]="true"
+    [rows]="10">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Loan Name</th>
+        <th>Total Amount</th>
+        <th>EMI Amount</th>
+        <th>Tenure</th>
+        <th>Interest Rate</th>
+        <th>Paid EMIs</th>
+        <th>Remaining</th>
+        <th>Progress</th>
+        <th>Next Due</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-emi>
+      <tr>
+        <td>{{ emi.loanName }}</td>
+        <td>{{ emi.totalAmount | currency:'INR' }}</td>
+        <td>{{ emi.emiAmount | currency:'INR' }}</td>
+        <td>{{ emi.tenure }} months</td>
+        <td>{{ emi.interestRate }}%</td>
+        <td>{{ emi.paidEmis || 0 }} / {{ emi.tenure }}</td>
+        <td>{{ emi.remainingAmount || emi.totalAmount | currency:'INR' }}</td>
+        <td>
+          <p-progressBar 
+            [value]="getProgressValue(emi)"
+            [showValue]="false"
+            [style]="{'height': '10px'}">
+          </p-progressBar>
+          <small>{{ getProgressValue(emi) | number:'1.0-0' }}%</small>
+        </td>
+        <td>{{ emi.nextDueDate | date }}</td>
+        <td>
+          <p-tag 
+            [value]="emi.status || 'ACTIVE'"
+            [severity]="getStatusSeverity(emi.status || 'ACTIVE')">
+          </p-tag>
+        </td>
+        <td>
+          <p-button 
+            icon="pi pi-dollar" 
+            styleClass="p-button-rounded p-button-info p-button-sm mr-2"
+            (onClick)="payEMI(emi)"
+            pTooltip="Pay EMI">
+          </p-button>
+          <p-button 
+            icon="pi pi-pencil" 
+            styleClass="p-button-rounded p-button-success p-button-sm mr-2"
+            (onClick)="editEMI(emi)">
+          </p-button>
+          <p-button 
+            icon="pi pi-trash" 
+            styleClass="p-button-rounded p-button-danger p-button-sm"
+            (onClick)="deleteEMI(emi)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog 
+  [(visible)]="displayDialog" 
+  [header]="isEdit ? 'Edit EMI' : 'Add EMI'"
+  [modal]="true"
+  [style]="{width: '500px'}">
+  
+  <div class="p-fluid">
+    <div class="field">
+      <label for="loanName">Loan Name</label>
+      <input 
+        type="text" 
+        pInputText 
+        id="loanName"
+        [(ngModel)]="emi.loanName"
+        placeholder="e.g., Home Loan, Car Loan"
+        required>
+    </div>
+    
+    <div class="field">
+      <label for="totalAmount">Total Loan Amount</label>
+      <p-inputNumber 
+        id="totalAmount"
+        [(ngModel)]="emi.totalAmount"
+        mode="currency"
+        currency="INR"
+        locale="en-IN">
+      </p-inputNumber>
+    </div>
+    
+    <div class="field">
+      <label for="emiAmount">EMI Amount (Monthly)</label>
+      <p-inputNumber 
+        id="emiAmount"
+        [(ngModel)]="emi.emiAmount"
+        mode="currency"
+        currency="INR"
+        locale="en-IN">
+      </p-inputNumber>
+    </div>
+    
+    <div class="field">
+      <label for="tenure">Tenure (Months)</label>
+      <p-inputNumber 
+        id="tenure"
+        [(ngModel)]="emi.tenure"
+        [min]="1"
+        [max]="360">
+      </p-inputNumber>
+    </div>
+    
+    <div class="field">
+      <label for="interestRate">Interest Rate (%)</label>
+      <p-inputNumber 
+        id="interestRate"
+        [(ngModel)]="emi.interestRate"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        suffix="%">
+      </p-inputNumber>
+    </div>
+    
+    <div class="field">
+      <label for="startDate">Start Date</label>
+      <input 
+        type="date" 
+        pInputText 
+        id="startDate"
+        [(ngModel)]="emi.startDate">
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <p-button 
+      label="Cancel" 
+      icon="pi pi-times"
+      styleClass="p-button-text"
+      (onClick)="displayDialog = false">
+    </p-button>
+    <p-button 
+      label="Save" 
+      icon="pi pi-check"
+      (onClick)="saveEMI()">
+    </p-button>
+  </ng-template>
+</p-dialog>
