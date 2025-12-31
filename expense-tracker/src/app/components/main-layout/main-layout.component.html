@@ -1,9 +1,17 @@
 <div class="app-wrapper">
+      <!-- Header -->
       <div class="app-header">
         <div class="header-content">
-          <h1 class="app-title">
-            <i class="pi pi-wallet"></i> Expense Tracker Pro
-          </h1>
+          <div class="header-left">
+            <button class="hamburger-btn mobile-menu" (click)="sidebarVisible = true">
+              <i class="pi pi-bars"></i>
+            </button>
+            <h1 class="app-title">
+              <i class="pi pi-wallet"></i> 
+              <span class="hide-mobile">Expense Tracker Pro</span>
+              <span class="show-mobile">Tracker</span>
+            </h1>
+          </div>
           
           <div class="user-section">
             <span class="username">{{ currentUser?.username }}</span>
@@ -17,8 +25,30 @@
         </div>
       </div>
       
+      <!-- Main Content with Tabs (Desktop) -->
       <div class="container">
-        <p-tabView>
+        <!-- Quick Actions (Mobile Only) -->
+        <div class="quick-actions show-mobile">
+          <div class="quick-action-btn" (click)="navigateToTab(1)">
+            <i class="pi pi-plus-circle" style="color: #ef4444;"></i>
+            <span>Add Expense</span>
+          </div>
+          <div class="quick-action-btn" (click)="navigateToTab(2)">
+            <i class="pi pi-calendar-plus" style="color: #3b82f6;"></i>
+            <span>Add EMI</span>
+          </div>
+          <div class="quick-action-btn" (click)="navigateToTab(3)">
+            <i class="pi pi-chart-line" style="color: #10b981;"></i>
+            <span>Set Budget</span>
+          </div>
+          <div class="quick-action-btn" (click)="navigateToTab(4)">
+            <i class="pi pi-credit-card" style="color: #f59e0b;"></i>
+            <span>Add Debt</span>
+          </div>
+        </div>
+        
+        <!-- Desktop Tabs -->
+        <p-tabView [(activeIndex)]="activeTabIndex" class="hide-mobile">
           <p-tabPanel header="Dashboard" leftIcon="pi pi-home">
             <app-dashboard></app-dashboard>
           </p-tabPanel>
@@ -43,5 +73,76 @@
             <app-reports></app-reports>
           </p-tabPanel>
         </p-tabView>
+        
+        <!-- Mobile Content -->
+        <div class="mobile-content show-mobile">
+          <app-dashboard *ngIf="activeTabIndex === 0"></app-dashboard>
+          <app-expense *ngIf="activeTabIndex === 1"></app-expense>
+          <app-emi *ngIf="activeTabIndex === 2"></app-emi>
+          <app-budget *ngIf="activeTabIndex === 3"></app-budget>
+          <app-debt *ngIf="activeTabIndex === 4"></app-debt>
+          <app-reports *ngIf="activeTabIndex === 5"></app-reports>
+        </div>
       </div>
+      
+      <!-- Mobile Bottom Navigation -->
+      <div class="mobile-bottom-nav show-mobile">
+        <div class="nav-items">
+          <div class="nav-item" [class.active]="activeTabIndex === 0" (click)="navigateToTab(0)">
+            <i class="pi pi-home"></i>
+            <span>Home</span>
+          </div>
+          <div class="nav-item" [class.active]="activeTabIndex === 1" (click)="navigateToTab(1)">
+            <i class="pi pi-money-bill"></i>
+            <span>Expenses</span>
+          </div>
+          <div class="nav-item" [class.active]="activeTabIndex === 2" (click)="navigateToTab(2)">
+            <i class="pi pi-calendar"></i>
+            <span>EMI</span>
+          </div>
+          <div class="nav-item" [class.active]="activeTabIndex === 3" (click)="navigateToTab(3)">
+            <i class="pi pi-chart-line"></i>
+            <span>Budget</span>
+          </div>
+          <div class="nav-item" [class.active]="activeTabIndex === 5" (click)="navigateToTab(5)">
+            <i class="pi pi-chart-bar"></i>
+            <span>Reports</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile Sidebar Menu -->
+      <p-sidebar [(visible)]="sidebarVisible" position="left">
+        <h3 style="margin-top: 0;">Menu</h3>
+        <div class="sidebar-menu">
+          <div class="menu-item" (click)="navigateToTab(0); sidebarVisible = false">
+            <i class="pi pi-home"></i>
+            <span>Dashboard</span>
+          </div>
+          <div class="menu-item" (click)="navigateToTab(1); sidebarVisible = false">
+            <i class="pi pi-money-bill"></i>
+            <span>Expenses</span>
+          </div>
+          <div class="menu-item" (click)="navigateToTab(2); sidebarVisible = false">
+            <i class="pi pi-calendar"></i>
+            <span>EMI Schedule</span>
+          </div>
+          <div class="menu-item" (click)="navigateToTab(3); sidebarVisible = false">
+            <i class="pi pi-chart-line"></i>
+            <span>Budgets</span>
+          </div>
+          <div class="menu-item" (click)="navigateToTab(4); sidebarVisible = false">
+            <i class="pi pi-credit-card"></i>
+            <span>Debts</span>
+          </div>
+          <div class="menu-item" (click)="navigateToTab(5); sidebarVisible = false">
+            <i class="pi pi-chart-bar"></i>
+            <span>Reports</span>
+          </div>
+          <div class="menu-item logout" (click)="logout()">
+            <i class="pi pi-sign-out"></i>
+            <span>Logout</span>
+          </div>
+        </div>
+      </p-sidebar>
     </div>

@@ -1,7 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
 * {
   margin: 0;
-  padding: 0;
+  padding: 1;
   box-sizing: border-box;
 }
 
@@ -9,49 +8,544 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: #f8f9fa;
   color: #495057;
+  overflow-x: hidden;
 }
 
+/* Mobile First Approach */
+.container {
+  width: 100%;
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem;
+  }
+}
+
+/* PrimeNG Table Responsive */
+::ng-deep .p-datatable-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  ::ng-deep .p-datatable table {
+    font-size: 0.875rem;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  /* Hide less important columns on mobile */
+  ::ng-deep .p-datatable .hide-mobile {
+    display: none;
+  }
+}
+
+/* PrimeNG Dialog Responsive */
+@media (max-width: 768px) {
+  ::ng-deep .p-dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 0.5rem !important;
+  }
+  
+  ::ng-deep .p-dialog .p-dialog-content {
+    padding: 1rem !important;
+  }
+}
+
+/* PrimeNG Button Responsive */
+@media (max-width: 768px) {
+  ::ng-deep .p-button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  ::ng-deep .p-button-icon-only {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  
+  ::ng-deep .p-button-rounded {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+}
+
+/* Form Fields Responsive */
 .p-fluid .field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #495057;
+@media (max-width: 768px) {
+  .p-fluid .field {
+    margin-bottom: 0.75rem;
+  }
+  
+  .field label {
+    font-size: 0.875rem;
+  }
+  
+  ::ng-deep .p-inputtext,
+  ::ng-deep .p-inputnumber input,
+  ::ng-deep .p-dropdown {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
 }
 
-.p-datatable .p-datatable-thead > tr > th {
-  background-color: #f8f9fa;
-  color: #495057;
-  font-weight: 600;
-}
-
-.p-button {
-  font-weight: 500;
-}
-
+/* Card Responsive */
 .card {
   background: white;
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
 
-.card h2 {
-  margin-bottom: 1.5rem;
-  color: #495057;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .container {
+  .card {
     padding: 1rem;
+    border-radius: 6px;
   }
   
-  .p-datatable .p-datatable-tbody > tr > td {
+  .card h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* TabView Mobile */
+@media (max-width: 768px) {
+  ::ng-deep .p-tabview .p-tabview-nav {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  ::ng-deep .p-tabview .p-tabview-nav li {
+    flex-shrink: 0;
+  }
+  
+  ::ng-deep .p-tabview .p-tabview-title {
     font-size: 0.875rem;
+  }
+}
+
+/* Toast Messages Mobile */
+@media (max-width: 768px) {
+  ::ng-deep .p-toast {
+    width: calc(100% - 2rem) !important;
+    left: 1rem !important;
+    top: 1rem !important;
+  }
+  
+  ::ng-deep .p-toast-message {
+    margin: 0 0 0.5rem 0 !important;
+  }
+}
+
+/* Utility Classes */
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+.mr-1 { margin-right: 0.5rem; }
+.mr-2 { margin-right: 1rem; }
+
+.hide-mobile { display: initial; }
+.show-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+  .show-mobile { display: initial; }
+}
+
+/* ===================================
+   Dashboard Mobile Styles
+   dashboard.component.css - REPLACE
+   =================================== */
+
+.dashboard {
+  padding: 1rem;
+}
+
+.dashboard h2 {
+  margin-bottom: 1.5rem;
+  color: #495057;
+  font-size: 1.75rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 3rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.stat-icon.expense { color: #ef4444; background-color: #fee2e2; }
+.stat-icon.emi { color: #3b82f6; background-color: #dbeafe; }
+.stat-icon.budget { color: #10b981; background-color: #d1fae5; }
+.stat-icon.debt { color: #f59e0b; background-color: #fef3c7; }
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0.25rem 0;
+}
+
+.stat-content small {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1rem;
+}
+
+/* Quick Action Buttons for Mobile */
+.quick-actions {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.quick-action-btn {
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-action-btn:active {
+  transform: scale(0.95);
+  background: #f9fafb;
+}
+
+.quick-action-btn i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.quick-action-btn span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Mobile Responsive - Dashboard */
+@media (max-width: 768px) {
+  .dashboard h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .stat-card {
+    gap: 0.75rem;
+  }
+  
+  .stat-icon {
+    font-size: 2.5rem;
+    padding: 0.5rem;
+  }
+  
+  .stat-value {
+    font-size: 1.25rem;
+  }
+  
+  .stat-content h3 {
+    font-size: 0.75rem;
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions {
+    display: grid;
+  }
+  
+  ::ng-deep .p-chart canvas {
+    max-height: 250px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 0.5rem;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===================================
+   Table Mobile Styles (All Components)
+   =================================== */
+
+/* Mobile Table Styles */
+@media (max-width: 768px) {
+  /* Stack table cards on mobile */
+  .mobile-table-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-table-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .mobile-table-card .card-title {
+    font-weight: 600;
+    color: #111827;
+    font-size: 1rem;
+  }
+  
+  .mobile-table-card .card-body {
+    display: grid;
+    gap: 0.5rem;
+  }
+  
+  .mobile-table-card .card-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+  
+  .mobile-table-card .card-label {
+    color: #6b7280;
+    font-weight: 500;
+  }
+  
+  .mobile-table-card .card-value {
+    color: #111827;
+    font-weight: 500;
+    text-align: right;
+  }
+  
+  .mobile-table-card .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+  }
+}
+
+/* ===================================
+   Login/Register Mobile Styles
+   =================================== */
+
+@media (max-width: 768px) {
+  .login-container,
+  .register-container {
+    padding: 0.5rem;
+    min-height: 100vh;
+  }
+  
+  .login-card,
+  .register-card {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .login-header i,
+  .register-header i {
+    font-size: 2.5rem;
+  }
+  
+  .login-header h2,
+  .register-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ===================================
+   App Header Mobile Styles
+   =================================== */
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.75rem 0;
+  }
+  
+  .header-content {
+    padding: 0 1rem;
+  }
+  
+  .app-title {
+    font-size: 1.25rem;
+  }
+  
+  .app-title i {
+    font-size: 1.5rem;
+  }
+  
+  .username {
+    display: none;
+  }
+  
+  ::ng-deep .user-section .p-button {
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  ::ng-deep .user-section .p-button .p-button-label {
+    display: none;
+  }
+}
+
+/* ===================================
+   Bottom Navigation for Mobile
+   =================================== */
+
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 0.5rem 0;
+}
+
+.mobile-bottom-nav .nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: #6b7280;
+  transition: color 0.2s;
+  flex: 1;
+  cursor: pointer;
+}
+
+.mobile-bottom-nav .nav-item.active {
+  color: #3b82f6;
+}
+
+.mobile-bottom-nav .nav-item i {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.mobile-bottom-nav .nav-item span {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: block;
+  }
+  
+  /* Hide TabView on mobile */
+  ::ng-deep .p-tabview {
+    display: none;
+  }
+  
+  /* Add padding to bottom for nav */
+  .container {
+    padding-bottom: 5rem !important;
+  }
+}
+
+/* ===================================
+   Hamburger Menu for Mobile
+   =================================== */
+
+.mobile-menu {
+  display: none;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #495057;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
   }
 }
